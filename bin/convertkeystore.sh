@@ -42,7 +42,7 @@ fi
   chmod a+r $KS_PATH
 
   #CREATE kubernetes secrets
- SECRET_NAME="certbot"
+ SECRET_NAME=${SECRET_NAME:-certbot}
 
  for SECRET_NAMESPACE in $SECRET_NAMESPACES; do
  echo "Generating kubernetes secret ${SECRET_NAME} (namespace ${SECRET_NAMESPACE})"

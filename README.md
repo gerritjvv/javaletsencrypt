@@ -10,17 +10,40 @@ like Nginx and the keystores by the JVM applications.
 The keystore type is p12
 
 
+Docker: https://cloud.docker.com/u/gerritjvv/repository/docker/gerritjvv/letsencrypt
+
 # Requirements
 
 **Envrinonment variables**
 
+
 | Name | Description |
+| --- | --- |
 | LETS_ENCRYPT_DIR | default value ${LETS_ENCRYPT_DIR:-"/etc/letsencrypt/live/$DOMAIN 
 | DOMAIN | The domain that you're renewing e.g bla.io 
 | NAME | any name you choose 
 | KS_PASSWORD | The password used for the keystore 
 | KS_PATH | The path + keystore name e.g /etc/keys/keystore.p12 
+| SECRET_NAMESPACES | The secret namespaces to create the secrets for, remember to create the proper RBAC roles and service account to allow the certbot container to create the secretws |
+| SECRET_NAME | default is certbot, a secret is created for each namespace with this name |
 
+
+The secret template used is:
+
+```
+	apiVersion: v1
+	kind: Secret
+	metadata:
+	  name: "${SECRET_NAME}"
+	  namespace: "${SECRET_NAMESPACE}"
+	type: Opaque
+	data:
+	  cert.pem: "$(cat /etc/letsencrypt/live/${DOMAIN}/cert.pem | base64 --wrap=0)"
+	  chain.pem: "$(cat /etc/letsencrypt/live/${DOMAIN}/chain.pem | base64 --wrap=0)"
+	  fullchain.pem: "$(cat /etc/letsencrypt/live/${DOMAIN}/fullchain.pem | base64 --wrap=0)"
+	  privkey.pem: "$(cat /etc/letsencrypt/live/${DOMAIN}/privkey.pem | base64 --wrap=0)"
+	  keystore.p12 "$(cat ${KS_PATH} | base64 --wrap=0)"
+```
 
 # Usage
 
