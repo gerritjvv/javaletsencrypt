@@ -41,7 +41,7 @@ cert () {
 
 certbot certonly \
   --dns-digitalocean \
-  --dns-digitalocean-credentials ~/.secrets/certbot/digitalocean.ini \
+  --dns-digitalocean-credentials ~/.digitalocean.ini \
   --dns-digitalocean-propagation-seconds 60 \
   --agree-tos \
   --email $EMAIL \
@@ -51,7 +51,7 @@ certbot certonly \
 
 }
 
-CMD "$1"
+CMD="$1"
 shift
 
 case $CMD in 
