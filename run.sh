@@ -12,8 +12,6 @@ if [ -z "$EMAIL" ]; then
 	exit -1
 fi
 
-cert_digital_ocean () {
-
 
 if [ -z "DIGITALOCEAN_ACCESS_TOKEN" ]; then
  echo "DIGITALOCEAN_ACCESS_TOKEN is not defined"
@@ -25,17 +23,6 @@ dns_digitalocean_token = $DIGITALOCEAN_ACCESS_TOKEN
 EOF
 
 chmod 600 ~/.digitalocean.ini
-
-certbot certonly \
-  --dns-digitalocean \
-  --dns-digitalocean-credentials ~/.digitalocean.ini \
-  --dns-digitalocean-propagation-seconds 60 \
-  --agree-tos \
-  --email $EMAIL \
-  --non-interactive \
-  -d $DOMAIN -d www.${DOMAIN} certonly
-
-}
 
 cert () {
 
